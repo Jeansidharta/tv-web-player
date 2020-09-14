@@ -1,15 +1,9 @@
 import Head from 'next/head'
-import styled from 'styled-components';
-import Navbar from '../../components/layout/navbar';
-import Footer from '../../components/layout/footer';
 import ImageURLs from '../../images';
-
-const Main = styled.div`
-	width: 100%;
-	height: 100%;
-	font-size: 32px;
-	overflow-y: auto;
-`;
+import { InferGetServerSidePropsType } from 'next';
+import { HomeServerSideProps } from './getServerSideProps';
+import DirectoryRender from './directory-render';
+import { isDirectoryEntry, isFileEntry } from '../../models/entry';
 
 /**
 * Visit https://schema.org/docs/full.html for a list of all types to put here
@@ -22,7 +16,17 @@ const JSONLD = `{
 	"image": "${ImageURLs.logoPng}"
 }`;
 
-export default function Home() {
+export default function Home (props: InferGetServerSidePropsType<HomeServerSideProps>) {
+	const { entry } = props;
+
+	function renderContent () {
+		if (isDirectoryEntry(entry)) {
+			return <DirectoryRender entry={entry} />;
+		} else if (isFileEntry(entry)) {
+			return <>Cannot render file yet!</>
+		} else throw new Error('Invalid entry type!');
+	}
+
 	return (
 		<>
 			<Head>
@@ -33,11 +37,7 @@ export default function Home() {
 				{/* This is json-ld with schema data */}
 				<script type='application/ld+json'>{JSONLD}</script>
 			</Head>
-			<Navbar />
-			<Main>
-				<h1>Hello!</h1>
-			</Main>
-			<Footer />
+			{renderContent()}
 		</>
 	)
 }

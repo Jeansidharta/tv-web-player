@@ -1,18 +1,17 @@
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 
 module.exports = {
-	exportPathMap: async function (
-		defaultPathMap,
-		{ dev, dir, outDir, distDir, buildId }
-	) {
-		return {
-		...defaultPathMap,
-		// Reroutes the '/' path to '/home'
-		'/': { page: '/home' },
-		}
+	redirects () {
+		return [
+			{
+				source: '/',
+				destination: '/home',
+				permanent: true,
+			},
+		];
 	},
 
-	// Custom webpack configurations
+	// Cusm webpack configurations
 	webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
 		config.module.rules.push({
 			// Change this regex if you want another type of file to be interpred by webpack
