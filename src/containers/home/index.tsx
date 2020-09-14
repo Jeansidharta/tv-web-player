@@ -4,6 +4,7 @@ import { InferGetServerSidePropsType } from 'next';
 import { HomeServerSideProps } from './getServerSideProps';
 import DirectoryRender from './directory-render';
 import { isDirectoryEntry, isFileEntry } from '../../models/entry';
+import FileRender from './file-render';
 
 /**
 * Visit https://schema.org/docs/full.html for a list of all types to put here
@@ -23,7 +24,7 @@ export default function Home (props: InferGetServerSidePropsType<HomeServerSideP
 		if (isDirectoryEntry(entry)) {
 			return <DirectoryRender entry={entry} />;
 		} else if (isFileEntry(entry)) {
-			return <>Cannot render file yet!</>
+			return <FileRender entry={entry} />
 		} else throw new Error('Invalid entry type!');
 	}
 

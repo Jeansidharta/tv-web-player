@@ -1,14 +1,13 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import BASE_PATH from "../../constants/base-content-path";
 import Entry from "../../models/entry";
 import { FsType, PathType } from "../../models/node-types";
 import ParsedPath from "../../models/path";
 
-const BasePath = 'D:\\torrents/';
-
 async function readDirectoryContents (nodeLibs: { fs: FsType, path: PathType }, directoryPath: ParsedPath): Promise<Entry<'directory'>> {
 	const { fs, path } = nodeLibs;
 
-	const dir = await fs.opendir(path.join(BasePath, directoryPath.full));
+	const dir = await fs.opendir(path.join(BASE_PATH, directoryPath.full));
 	const entries: Entry[] = [];
 	for await (const dirEnt of dir) {
 		entries.push({
@@ -48,7 +47,7 @@ const getServerSideProps = async (nodeLibs: { fs: FsType, path: PathType }, cont
 	const fullPath = '/' + params.join('/');
 	const queryStringPath = pathParse(path, fullPath);
 
-	const stat = await fs.stat(path.join(BasePath, queryStringPath.full));
+	const stat = await fs.stat(path.join(BASE_PATH, queryStringPath.full));
 
 	if (stat.isDirectory()) {
 		return { props: { entry: await readDirectoryContents({ fs, path }, queryStringPath) } };
