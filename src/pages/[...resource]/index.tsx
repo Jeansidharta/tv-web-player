@@ -6,7 +6,7 @@ import { FsType, PathType } from '../../models/node-types';
 
 export async function getServerSideProps (context: GetServerSidePropsContext) {
 	const fs = require('fs').promises as FsType;
-	const path = require('path')  as PathType;
+	const path = require('path') as PathType;
 
 	return customGetServerSideProps({ fs, path }, context);
 }

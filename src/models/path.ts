@@ -34,7 +34,7 @@ type ParsedPath = {
 	* The full path to the resource.
 	* @example 'C:\Path\To\Resource\resource.ext' -> 'C:\Path\To\Resource\resource.ext'
 	*/
-	full:
+	full: string,
 }
 
 export default ParsedPath;
